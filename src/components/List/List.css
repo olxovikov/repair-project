@@ -1,0 +1,50 @@
+/* .list {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+} */
+
+.list {
+    display: flex;
+    justify-content: space-between;
+}
+
+.list button {
+    margin-top: 50%;
+    height: 75px;
+    width: 75px;
+    background-color: transparent;
+}
+
+.list button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.list img {
+    width: 100%;
+}
+
+.columns {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.columns__buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.actions {
+    margin-top: 20px;
+}
+
+.actions button {
+    margin: 5px;
+}
+
+.actions button:disabled {
+    cursor: not-allowed;
+}

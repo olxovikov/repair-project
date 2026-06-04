@@ -1,0 +1,24 @@
+.repair__form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.repair__form form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.repair__form label {
+    margin-bottom: 10px;
+}
+
+.repair__form input {
+    display: block;
+}
+
+.repair__form button {
+    margin-top: 10px;
+}

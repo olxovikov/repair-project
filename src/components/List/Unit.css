@@ -1,0 +1,14 @@
+.selectedUnit {
+    background-color: greenyellow;
+}
+
+.unitCard {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.popup-line {
+    display: flex;
+    justify-content: space-between;
+}
