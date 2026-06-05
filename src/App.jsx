@@ -2,10 +2,11 @@ import './App.css'
 import { useState } from 'react'
 import Form from './components/Form/Form'
 import List from './components/List/List'
+import database from './data/database.json'
 
 function App() {
 
-  const [data, setData] = useState([])
+  const [data, setData] = useState(database)
 
   function selectUnit(id) {
 

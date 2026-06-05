@@ -21,7 +21,7 @@ function Form(props) {
             inv: event.target.inv.value,
             defect: event.target.defect.value,
             date1: null,
-            dete2: null,
+            date2: null,
             comment: event.target.comment.value,
             status: 'waiting',
             isSelected: false,
