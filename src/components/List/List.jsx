@@ -44,7 +44,7 @@ function List(props) {
                 {
                     props.data.map((element)=>{
                         if (element.status === 'waiting') {
-                            return <Unit deleteUnit={props.deleteUnit} info={element} selectUnit={props.selectUnit} id={element.id} name={element.name} key={element.id} isSelected={element.isSelected}/>
+                            return <Unit setData={props.setData} deleteUnit={props.deleteUnit} info={element} selectUnit={props.selectUnit} id={element.id} name={element.name} key={element.id} isSelected={element.isSelected}/>
                         }
                     })
                 }
@@ -76,7 +76,7 @@ function List(props) {
                 {
                     props.data.map((element)=>{
                         if (element.status === 'repair') {
-                            return <Unit deleteUnit={props.deleteUnit} info={element} selectUnit={props.selectUnit} id={element.id} name={element.name} key={element.id} isSelected={element.isSelected}/>
+                            return <Unit setData={props.setData} deleteUnit={props.deleteUnit} info={element} selectUnit={props.selectUnit} id={element.id} name={element.name} key={element.id} isSelected={element.isSelected}/>
                         }
                     })
                 }
@@ -108,7 +108,7 @@ function List(props) {
                 {
                     props.data.map((element)=>{
                         if (element.status === 'complited') {
-                            return <Unit deleteUnit={props.deleteUnit} info={element} selectUnit={props.selectUnit} id={element.id} name={element.name} key={element.id} isSelected={element.isSelected}/>
+                            return <Unit setData={props.setData} deleteUnit={props.deleteUnit} info={element} selectUnit={props.selectUnit} id={element.id} name={element.name} key={element.id} isSelected={element.isSelected}/>
                         }
                     })
                 }

@@ -10,9 +10,35 @@ function Form(props) {
     const [defect, setDefect] = useState('')
     const [comment, setComment] = useState('')
 
+    
+
     function submitForm(event) {
         
         event.preventDefault()
+
+        function changeHistory(newInv) {
+       
+            let result = props.data.map(element => {
+                if (element.inv === newInv) return {...element, 
+                    history: [...element.history, `Дата передачи на ремонт: ${element.date1}\nДата получения с ремонта: ${element.date2}\nНеисправность: ${element.defect}`], 
+                    defect: event.target.defect.value,
+                    date1: null,
+                    date2: null,
+                    comment: event.target.comment.value,
+                    status: 'waiting',
+                    place: null,
+                }
+            })
+            
+            props.setData(result)
+        }
+
+        let counter = false;
+        props.data.forEach(element => {
+            if (element.inv === event.target.inv.value) {counter=true}
+        });
+
+        if (counter === false) {
 
         const newData = 
         [...props.data, {
@@ -25,9 +51,25 @@ function Form(props) {
             comment: event.target.comment.value,
             status: 'waiting',
             isSelected: false,
+            place: null,
+            history: [],
         }]
         
         props.setData(newData)
+        
+        }
+
+        else {
+            let userResponse;
+            userResponse = confirm(`В списке уже числится оборудование с указанным инвентарным номером. Введенные значения будут учтены, старые данные перейдут в историю.\nПродолжить?`)
+            userResponse ? 
+            props.data.forEach(element => {
+                 if (element.inv === event.target.inv.value) {
+                    changeHistory(event.target.inv.value)
+                 }
+            })
+            : null
+        }
 
         setName('')
         setInv('')

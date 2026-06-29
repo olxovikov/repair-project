@@ -21,10 +21,10 @@ function App() {
 
   function changeStatus(status) {
     let result = data.map((element)=>{
-      if (element.isSelected === true && element.status === 'waiting' && status === 'waiting') {return {...element, status: 'repair', isSelected: false}}
-      else if (element.isSelected === true && element.status === 'repair' && status === 'repair') {return {...element, status: 'complited', isSelected: false}}
-      else if (element.isSelected === true && element.status === 'complited' && status === 'back') {return {...element, status: 'repair', isSelected: false}}
-      else if (element.isSelected === true && element.status === 'repair' && status === 'back') {return {...element, status: 'waiting', isSelected: false}}
+      if (element.isSelected === true && element.status === 'waiting' && status === 'waiting') {return {...element, status: 'repair', isSelected: false, place: 'В ремонте'}}
+      else if (element.isSelected === true && element.status === 'repair' && status === 'repair') {return {...element, status: 'complited', isSelected: false, place: ''}}
+      else if (element.isSelected === true && element.status === 'complited' && status === 'back') {return {...element, status: 'repair', isSelected: false, place: 'В ремонте'}}
+      else if (element.isSelected === true && element.status === 'repair' && status === 'back') {return {...element, status: 'waiting', isSelected: false, place: ''}}
       else {return {...element}}
     })
 
