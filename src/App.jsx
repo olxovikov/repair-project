@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Form from './components/Form/Form'
 import List from './components/List/List'
 import database from './data/database.json'
+import Searcher from './components/Searcher/Searcher'
 
 function App() {
 
@@ -43,8 +44,13 @@ function App() {
     <div className="app">
       <Form data={data} setData={setData}/>
       {(data.length !== 0) ? (
-      <List deleteSelected={deleteSelected} deleteUnit={deleteUnit} changeStatus={changeStatus} data={data} setData={setData} selectUnit={selectUnit} />) : (null)}
-      
+      <>
+        <hr />
+        <List deleteSelected={deleteSelected} deleteUnit={deleteUnit} changeStatus={changeStatus} data={data} setData={setData} selectUnit={selectUnit} />
+        <hr />
+        <Searcher data={data}/>
+      </>
+      ) : (null)}
     </div>
   )
 }

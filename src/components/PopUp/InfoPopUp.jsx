@@ -1,6 +1,16 @@
+import { useEffect } from 'react'
 import './InfoPopUp.css'
 
 function InfoPopUp({isOpen, onClose, children}) {
+    useEffect(()=>{
+        if (isOpen) {
+            document.body.classList.add('no-scroll')
+        }
+        return () => {
+            document.body.classList.remove('no-scroll')
+        }
+    }, [isOpen])
+
     const onWrapperClick = (event) => {
         if (event.target.classList.contains("modal-wrapper")) onClose()
     }

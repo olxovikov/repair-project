@@ -1,5 +1,5 @@
 .modal {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -46,4 +46,8 @@
     height: 30px;
     padding: 0;
     background-color: transparent;
+}
+
+.no-scroll {
+    overflow: hidden;
 }

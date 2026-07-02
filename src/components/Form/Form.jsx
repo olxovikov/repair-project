@@ -28,6 +28,7 @@ function Form(props) {
                     status: 'waiting',
                     place: null,
                 }
+                else return {...element}
             })
             
             props.setData(result)
