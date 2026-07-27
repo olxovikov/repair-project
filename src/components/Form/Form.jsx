@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid'
 import { useState } from 'react'
 import './Form.css'
+import axios from 'axios'
 
 
 
@@ -12,27 +13,58 @@ function Form(props) {
 
     
 
-    function submitForm(event) {
+const submitForm = async (event) => {
         
         event.preventDefault()
 
-        function changeHistory(newInv) {
+        // function changeHistory(newInv) {
        
-            let result = props.data.map(element => {
-                if (element.inv === newInv) return {...element, 
-                    history: [...element.history, `Дата передачи на ремонт: ${element.date1}\nДата получения с ремонта: ${element.date2}\nНеисправность: ${element.defect}`], 
-                    defect: event.target.defect.value,
-                    date1: null,
-                    date2: null,
-                    comment: event.target.comment.value,
-                    status: 'waiting',
-                    place: null,
-                }
-                else return {...element}
-            })
+        //     let result = props.data.map(element => {
+        //         if (element.inv === newInv) return {...element, 
+        //             history: [...element.history, `Дата передачи на ремонт: ${element.date1}\nДата получения с ремонта: ${element.date2}\nНеисправность: ${element.defect}`], 
+        //             defect: event.target.defect.value,
+        //             date1: null,
+        //             date2: null,
+        //             comment: event.target.comment.value,
+        //             status: 'waiting',
+        //             place: null,
+        //         }
+        //         else return {...element}
+        //     })
             
-            props.setData(result)
-        }
+        //     props.setData(result)
+        // }
+
+        const changeHistory = async (newInv) => {
+            // Находим элемент, который будем обновлять
+            const targetElement = props.data.find(el => el.inv === newInv);
+            if (!targetElement) return;
+          
+            // Собираем обновления (как вы делали)
+            const historyEntry = `Дата передачи на ремонт: ${targetElement.date1}\nДата получения с ремонта: ${targetElement.date2}\nНеисправность: ${targetElement.defect}`;
+          
+            const updatedFields = {
+              history: [...targetElement.history, historyEntry],
+              defect: event.target.defect.value,   // важно: event доступен из внешней функции
+              date1: null,
+              date2: null,
+              comment: event.target.comment.value,
+              status: 'waiting',
+              place: null,
+            };
+          
+            try {
+              // Отправляем PATCH-запрос (можно использовать /bulk с одним элементом)
+              const response = await axios.patch('http://localhost:4000/data/bulk', [
+                { id: targetElement.id, ...updatedFields }
+              ]);
+              // Обновляем состояние из ответа сервера
+              props.setData(response.data);
+            } catch (error) {
+              console.error('Ошибка при обновлении истории:', error);
+              alert('Не удалось сохранить изменения. Попробуйте позже.');
+            }
+          };
 
         let counter = false;
         props.data.forEach(element => {
@@ -41,8 +73,8 @@ function Form(props) {
 
         if (counter === false) {
 
-        const newData = 
-        [...props.data, {
+        const newUnit = 
+        {
             id: uuidv4(),
             name: event.target.name.value,
             inv: event.target.inv.value,
@@ -54,9 +86,16 @@ function Form(props) {
             isSelected: false,
             place: null,
             history: [],
-        }]
+        }
         
-        props.setData(newData)
+        try {
+            const response = await axios.post('http://localhost:4000/data', newUnit)
+            props.setData(response.data)
+        } catch (error) {
+            console.log('Ошибка при добавлении:', error)
+        }
+
+        
         
         }
 

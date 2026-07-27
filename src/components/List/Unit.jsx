@@ -1,21 +1,34 @@
 import './Unit.css'
 import '../PopUp/InfoPopUp'
 import InfoPopUp from '../PopUp/InfoPopUp'
-import { useState } from 'react'
+import { useState, useEffect} from 'react'
+import axios from 'axios'
 
 function Unit(props) {
 
     const [popInfoIsOpen, setPopInfoIsOpen] = useState(false)
+    const [place, setPlace] = useState(props.info.place ?? '')
 
-    const handlePlaceChange = (id, newPlaceValue) => {
-        props.setData(prevData =>
-          prevData.map(item =>
-            { 
-                if (item.id === id) return { ...item, place: newPlaceValue }
-                else return {...item}
-            }
-          )
-        );
+    // Синхронизация при изменении выбранного элемента
+    useEffect(() => {
+        setPlace(props.info.place ?? '');
+    }, [props.info.place]);
+
+    const handlePlaceChange = async (id, newPlaceValue) => {
+        try {
+            // Отправляем PATCH-запрос на сервер
+            const response = await axios.patch(`http://localhost:4000/data/${id}`, {
+              place: newPlaceValue
+              // Если позже добавите другие поля, просто передавайте их в объекте
+            });
+            
+            // После успешного ответа обновляем локальное состояние данными с сервера
+            props.setData(response.data);
+          } catch (error) {
+            console.error('Ошибка при обновлении place:', error);
+            // Можно показать уведомление пользователю
+            // Опционально: откатить локальное состояние, если нужно
+          }
       };
 
     return (
@@ -26,7 +39,7 @@ function Unit(props) {
                 <div className='unitButtons'>
                     <button style={{width: 'auto', height: 'auto', marginTop: '0px', padding: '0px'}} 
                     onClick={(event)=>{event.stopPropagation(); setPopInfoIsOpen(true)}}>info</button>
-                    <InfoPopUp isOpen={popInfoIsOpen} onClose={()=>setPopInfoIsOpen(false)}>
+                    <InfoPopUp isOpen={popInfoIsOpen} onClose={async ()=>{await handlePlaceChange(props.info.id, place); setPopInfoIsOpen(false)}}>
                         <div className='popup-line'>
                             <label>id: </label>
                             <label>{props.info.id}</label>
@@ -63,8 +76,8 @@ function Unit(props) {
                             <label>Текущее местоположение: </label>
                             <input 
                                 type='text' 
-                                value={props.info.place ?? ''}
-                                onChange={(e)=>{handlePlaceChange(props.info.id, e.target.value)}}
+                                value={place}
+                                onChange={(e)=>{setPlace(e.target.value)}}
                             >
                             </input>
                         </div>

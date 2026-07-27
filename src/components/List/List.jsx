@@ -3,6 +3,7 @@ import './List.css'
 import arrow from '../../img/arrow.svg'
 import { useState } from 'react';
 import InfoPopUp from '../PopUp/InfoPopUp';
+import axios from 'axios'
 
 function List(props) {
 
@@ -31,6 +32,17 @@ function List(props) {
             }
           )
         );
+      };
+
+    const saveDate = async (id, value, field) => {
+        try {
+          const response = await axios.patch('http://localhost:4000/data/bulk', [
+            { id, [field]: value }
+          ]);
+          props.setData(response.data);
+        } catch (error) {
+          console.error('Ошибка при сохранении даты:', error);
+        }
       };
 
     return (
@@ -62,12 +74,13 @@ function List(props) {
                                             placeholder='ДД.ММ.ГГГГ' 
                                             value={element.date1 ?? ''}
                                             onChange={(e)=>handleDateChange(element.id, e.target.value, 'date1')}
+                                            onBlur={(e)=>saveDate(element.id, e.target.value, 'date1')}
                                         />
                                     </label>
                                     )
                             }
                         })}
-                        <button style={{marginTop:'15px', height: 'auto', width: 'auto',}} onClick={()=>{setPopInfoIsOpen1(false);props.changeStatus('waiting')}}>Сохранить</button>
+                        <button style={{marginTop:'15px', height: 'auto', width: 'auto',}} onClick={()=>{setPopInfoIsOpen1(false); props.changeStatus('waiting')}}>Сохранить</button>
                     </InfoPopUp>
                 </div>
 
@@ -95,6 +108,7 @@ function List(props) {
                                             placeholder='ДД.ММ.ГГГГ' 
                                             value={element.date2 ?? ''}
                                             onChange={(e)=>handleDateChange(element.id, e.target.value, 'date2')}
+                                            onBlur={(e)=>saveDate(element.id, e.target.value, 'date2')}
                                         />
                                     </label>
                                     )
