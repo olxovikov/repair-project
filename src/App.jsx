@@ -77,7 +77,7 @@ function App() {
   async function changeStatus(action) { // action = 'waiting' | 'repair' | 'back'
     // Определяем, какие элементы нужно изменить и какие у них новые поля
     const updates = [];
-    const newData = data.map(element => {
+      data.map(element => {
       if (!element.isSelected) return element; // не выбран – не меняем
   
       let updatedElement = null;

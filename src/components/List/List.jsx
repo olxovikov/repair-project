@@ -45,6 +45,36 @@ function List(props) {
         }
       };
 
+    // function deleteHistory(id, index) {
+    //     let result = props.data.map(element => {
+    //         if (element.id === id) {
+    //             return {...element, history: element.history.filter((element, idx)=>idx!=index)}
+    //         } else {return {...element}}
+    //     })
+    //     props.setData(result)
+    // }
+
+    const deleteHistory = async (id, index) => {
+        // Находим элемент, чтобы получить текущий массив истории
+        const target = props.data.find(el => el.id === id);
+        if (!target) return;
+      
+        // Формируем новый массив истории без указанного индекса
+        const newHistory = target.history.filter((_, idx) => idx !== index);
+      
+        try {
+          // Отправляем PATCH-запрос с обновлённым полем history
+          const response = await axios.patch('http://localhost:4000/data/bulk', [
+            { id, history: newHistory }
+          ]);
+          // Обновляем локальное состояние из ответа сервера
+          props.setData(response.data);
+        } catch (error) {
+          console.error('Ошибка при удалении записи истории:', error);
+          alert('Не удалось удалить запись. Попробуйте позже.');
+        }
+      };
+
     return (
         <>
             <h2>
@@ -56,7 +86,7 @@ function List(props) {
                 {
                     props.data.map((element)=>{
                         if (element.status === 'waiting') {
-                            return <Unit setData={props.setData} deleteUnit={props.deleteUnit} info={element} selectUnit={props.selectUnit} id={element.id} name={element.name} key={element.id} isSelected={element.isSelected}/>
+                            return <Unit deleteHistory={deleteHistory} setData={props.setData} deleteUnit={props.deleteUnit} info={element} selectUnit={props.selectUnit} id={element.id} name={element.name} key={element.id} isSelected={element.isSelected}/>
                         }
                     })
                 }
@@ -89,7 +119,7 @@ function List(props) {
                 {
                     props.data.map((element)=>{
                         if (element.status === 'repair') {
-                            return <Unit setData={props.setData} deleteUnit={props.deleteUnit} info={element} selectUnit={props.selectUnit} id={element.id} name={element.name} key={element.id} isSelected={element.isSelected}/>
+                            return <Unit deleteHistory={deleteHistory} setData={props.setData} deleteUnit={props.deleteUnit} info={element} selectUnit={props.selectUnit} id={element.id} name={element.name} key={element.id} isSelected={element.isSelected}/>
                         }
                     })
                 }
@@ -122,7 +152,7 @@ function List(props) {
                 {
                     props.data.map((element)=>{
                         if (element.status === 'complited') {
-                            return <Unit setData={props.setData} deleteUnit={props.deleteUnit} info={element} selectUnit={props.selectUnit} id={element.id} name={element.name} key={element.id} isSelected={element.isSelected}/>
+                            return <Unit deleteHistory={deleteHistory} setData={props.setData} deleteUnit={props.deleteUnit} info={element} selectUnit={props.selectUnit} id={element.id} name={element.name} key={element.id} isSelected={element.isSelected}/>
                         }
                     })
                 }

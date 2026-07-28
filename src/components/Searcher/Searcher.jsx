@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react'
 import './Searcher.css'
+import SearcherUnit from './SearcherUnit';
 
 function Searcher({data}) {
     const [searchTerm, setSearchTerm] = useState('');
@@ -47,32 +48,7 @@ function Searcher({data}) {
           <p>Ничего не найдено</p>
         ) : (
           results.map((item) => (
-            <div
-              key={item.id}
-              style={{
-                border: '1px solid #ddd',
-                borderRadius: '6px',
-                padding: '12px',
-                marginBottom: '12px',
-                background: '#f9f9f9',
-              }}
-            >
-              {/* Выводим все поля объекта, кроме isSelected */}
-              {Object.entries(item)
-                .filter(([key]) => key !== 'isSelected')
-                .map(([key, value]) => (
-                  <div key={key}>
-                    <strong>{key}:</strong>{' '}
-                    <label style={{whiteSpace: 'pre-line'}}>
-                        {Array.isArray(value)
-                        ? value.join(`,\n\n`) // для history выводим массив как строку
-                        : value !== null && value !== undefined
-                        ? String(value)
-                        : '—'}
-                    </label>
-                  </div>
-                ))}
-            </div>
+            <SearcherUnit key={item.id} item={item}/>
           ))
         )}
       </div>

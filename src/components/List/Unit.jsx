@@ -8,6 +8,7 @@ function Unit(props) {
 
     const [popInfoIsOpen, setPopInfoIsOpen] = useState(false)
     const [place, setPlace] = useState(props.info.place ?? '')
+    const [historyIsOpen, setHistoryIsOpen] = useState(false)
 
     // Синхронизация при изменении выбранного элемента
     useEffect(() => {
@@ -31,6 +32,13 @@ function Unit(props) {
           }
       };
 
+      function getStatus(status) {
+        if (status === 'waiting') {return 'Нужен ремонт'}
+        if (status === 'repair') {return 'В ремонте'}
+        if (status === 'complited') {return 'Отработано'}
+        else {return}
+      }
+
     return (
         <div onClick={()=>{return props.selectUnit(props.id)}} className={props.isSelected ? ('unitCard selectedUnit') : ('unitCard')}>
             <label onClick={()=>{return props.selectUnit(props.id)}} className={props.isSelected ? ('selectedUnit') : (null)}>{props.name}</label>
@@ -43,6 +51,10 @@ function Unit(props) {
                         <div className='popup-line'>
                             <label>id: </label>
                             <label>{props.info.id}</label>
+                        </div>
+                        <div className="popup-line">
+                            <label>Статус: </label>
+                            <label>{getStatus(props.info.status)}</label>
                         </div>
                         <div className="popup-line">
                             <label>Наименование: </label>
@@ -68,10 +80,6 @@ function Unit(props) {
                             <label>Комментарий: </label>
                             <label>{props.info.comment}</label>
                         </div>
-                        <div className="popup-line">
-                            <label>Статус: </label>
-                            <label>{props.info.status}</label>
-                        </div>
                         <div className='popup-line'>
                             <label>Текущее местоположение: </label>
                             <input 
@@ -81,17 +89,27 @@ function Unit(props) {
                             >
                             </input>
                         </div>
-                        {props.info.history.length ? 
-                        <div>
-                            <label style={{display: 'block', textAlign: 'center'}}>История предыдущих ремонтов:</label>
-                            <hr />
-                            {props.info.history.map((element, index) => {
-                                return <div key={index}>
-                                    <label style={{display: 'block', whiteSpace: 'pre-line'}}>{element}</label>
-                                    <hr/>
-                                </div>
-                            })}
+                        {props.info.history.length ?
+                        <>
+                        <div className='popup-line'>
+                            <label>История: </label>
+                            <a style={{cursor: 'pointer'}} onClick={()=>setHistoryIsOpen(!historyIsOpen)}>{historyIsOpen ? 'Скрыть историю' : 'Показать историю'}</a>
                         </div>
+                        {historyIsOpen 
+                        ? <div style={{textAlign: 'center'}}>
+                        <hr />
+                        <strong style={{display: 'block', textAlign: 'center'}}>История предыдущих ремонтов</strong>
+                        <hr />
+                        {props.info.history.map((element, index) => {
+                            return <div key={index}>
+                                <label style={{display: 'block', whiteSpace: 'pre-line'}}>{element}</label>
+                                <a style={{cursor:'pointer'}} onClick={()=>props.deleteHistory(props.info.id, index)}>delete</a>
+                                {(index+1 === props.info.history.length) ? null : <hr/>}
+                            </div>
+                        })}
+                    </div> : null}
+                        
+                        </>
                         : null}
                     </InfoPopUp>
                     <button style={{width: 'auto', height: 'auto', marginTop: '0px', padding: '0px'}} onClick={(event)=>{event.stopPropagation(); return props.deleteUnit(props.id)}}>del</button>
