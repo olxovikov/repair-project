@@ -1,22 +1,36 @@
 import Unit from './Unit'
 import './List.css'
 import arrow from '../../img/arrow.svg'
+import trash from '../../img/trash.svg'
 import { useState } from 'react';
 import InfoPopUp from '../PopUp/InfoPopUp';
 import axios from 'axios'
 
 function List(props) {
 
-    function isDisabled(status) {
-        let selectedCounter;
-        if (status) {
-            selectedCounter = props.data.filter((element)=>(element.isSelected && element.status === status)).length
+    // function isDisabled(status) {
+    //     let selectedCounter;
+    //     if (status) {
+    //         selectedCounter = props.data.filter((element)=>(element.isSelected && element.status === status)).length
+    //     }
+    //     else {
+    //         selectedCounter = props.data.filter((element)=>element.isSelected).length;
+    //     }
+
+    //     return (selectedCounter > 0)
+    // }
+
+    function isDisabled(direction, status) {
+
+        if (direction === 'right') {
+            return props.data.filter((element)=>(element.isSelected && element.status === status)).length
+        }
+        if (direction === 'left') {
+            return props.data.filter((element)=>(element.isSelected && element.status != 'waiting')).length
         }
         else {
-            selectedCounter = props.data.filter((element)=>element.isSelected).length;
+            return props.data.filter((element)=>element.isSelected).length;
         }
-
-        return (selectedCounter > 0)
     }
 
     const [popInfoIsOpen1, setPopInfoIsOpen1] = useState(false)
@@ -92,7 +106,7 @@ function List(props) {
                 }
                 </div>
                 <div className='columns__buttons'>
-                    <button onClick={()=>setPopInfoIsOpen1(true)} disabled={!isDisabled('waiting')}><img src={arrow}></img></button>
+                    <button onClick={()=>setPopInfoIsOpen1(true)} disabled={!isDisabled('right','waiting')}><img src={arrow}></img></button>
                     <InfoPopUp isOpen={popInfoIsOpen1} onClose={()=>{setPopInfoIsOpen1(false)}}>
                         <h3 style={{textAlign:'center', marginTop:'0'}}>Введите дату передачи на ремонт</h3>
                         {props.data.map((element)=>{
@@ -126,7 +140,7 @@ function List(props) {
                 </div>
                 
                 <div className='columns__buttons'>
-                    <button onClick={()=>setPopInfoIsOpen2(true)} disabled={!isDisabled('repair')}><img src={arrow}></img></button>
+                    <button onClick={()=>setPopInfoIsOpen2(true)} disabled={!isDisabled('right','repair')}><img src={arrow}></img></button>
                     <InfoPopUp isOpen={popInfoIsOpen2} onClose={()=>{setPopInfoIsOpen2(false)}}>
                         <h3 style={{textAlign:'center', marginTop:'0'}}>Введите дату получения с ремонта</h3>
                         {props.data.map((element)=>{
@@ -159,11 +173,11 @@ function List(props) {
                 </div>
             </div>
             <div className='actions'>
-                <button onClick={()=>props.deleteSelected()} disabled={!isDisabled()}>
-                    del
+                <button style={{padding: '15px'}} onClick={()=>props.deleteSelected()} disabled={!isDisabled()}>
+                    <img style={{height:'25px', width:'25px'}} src={trash} />
                 </button>
-                <button onClick={()=>props.changeStatus('back')} disabled={!isDisabled()}>
-                    move back
+                <button style={{padding: '15px'}} onClick={()=>props.changeStatus('back')} disabled={!isDisabled('left')}>
+                    <img style={{height:'25px', width:'25px', transform:'rotate(180deg)'}} src={arrow}/> 
                 </button>
             </div>
             

@@ -42,43 +42,43 @@ function Unit(props) {
     return (
         <div onClick={()=>{return props.selectUnit(props.id)}} className={props.isSelected ? ('unitCard selectedUnit') : ('unitCard')}>
             <label onClick={()=>{return props.selectUnit(props.id)}} className={props.isSelected ? ('selectedUnit') : (null)}>{props.name}</label>
-
-            {props.isSelected ? (
-                <div className='unitButtons'>
-                    <button style={{width: 'auto', height: 'auto', marginTop: '0px', padding: '0px'}} 
+            <button disabled={!props.isSelected} style={!props.isSelected ? {visibility:'hidden', width: 'auto', height: 'auto', marginTop: '0px', padding: '0px'} : {width: 'auto', height: 'auto', marginTop: '0px', padding: '0px'} } 
                     onClick={(event)=>{event.stopPropagation(); setPopInfoIsOpen(true)}}>info</button>
+            {props.isSelected ? (
+                
+                    
                     <InfoPopUp isOpen={popInfoIsOpen} onClose={async ()=>{await handlePlaceChange(props.info.id, place); setPopInfoIsOpen(false)}}>
                         <div className='popup-line'>
                             <label>id: </label>
-                            <label>{props.info.id}</label>
+                            <label>{props.info.id || '—'}</label>
                         </div>
                         <div className="popup-line">
                             <label>Статус: </label>
-                            <label>{getStatus(props.info.status)}</label>
+                            <label>{getStatus(props.info.status) ?? '—'}</label>
                         </div>
                         <div className="popup-line">
                             <label>Наименование: </label>
-                            <label>{props.info.name}</label>
+                            <label>{props.info.name || '—'}</label>
                         </div>
                         <div className="popup-line">
                             <label>Инвентарный номер: </label>
-                            <label>{props.info.inv}</label>
+                            <label>{props.info.inv || '—'}</label>
                         </div>
                         <div className="popup-line">
                             <label>Неисправность: </label>
-                            <label>{props.info.defect}</label>
+                            <label>{props.info.defect || '—'}</label>
                         </div>
                         <div className="popup-line">
                             <label>Дата передачи на ремонт: </label>
-                            <label>{props.info.date1}</label>
+                            <label>{props.info.date1 || '—'}</label>
                         </div>
                         <div className="popup-line">
                             <label>Дата получения с ремонта: </label>
-                            <label>{props.info.date2}</label>
+                            <label>{props.info.date2 || '—'}</label>
                         </div>
                         <div className="popup-line">
                             <label>Комментарий: </label>
-                            <label>{props.info.comment}</label>
+                            <label>{props.info.comment || '—'}</label>
                         </div>
                         <div className='popup-line'>
                             <label>Текущее местоположение: </label>
@@ -112,9 +112,9 @@ function Unit(props) {
                         </>
                         : null}
                     </InfoPopUp>
-                    <button style={{width: 'auto', height: 'auto', marginTop: '0px', padding: '0px'}} onClick={(event)=>{event.stopPropagation(); return props.deleteUnit(props.id)}}>del</button>
+                    // {/* <button style={{width: 'auto', height: 'auto', marginTop: '0px', padding: '0px'}} onClick={(event)=>{event.stopPropagation(); return props.deleteUnit(props.id)}}>del</button> */}
 
-                </div>
+                
             ) : (null)}
 
             

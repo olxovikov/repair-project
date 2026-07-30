@@ -41,7 +41,7 @@ function Searcher({data}) {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         placeholder="Введите текст для поиска..."
-        style={{ width: '300px', padding: '8px', fontSize: '16px' }}
+        style={{ width: '300px', padding: '8px', fontSize: '16px', textAlign: 'center' }}
       />
       <div style={{ marginTop: '20px' }}>
         {results.length === 0 ? (
