@@ -50,7 +50,7 @@ function List(props) {
 
     const saveDate = async (id, value, field) => {
         try {
-          const response = await axios.patch('http://localhost:4000/data/bulk', [
+          const response = await axios.patch(`${props.SERVER_URL}/data/bulk`, [
             { id, [field]: value }
           ]);
           props.setData(response.data);
@@ -78,7 +78,7 @@ function List(props) {
       
         try {
           // Отправляем PATCH-запрос с обновлённым полем history
-          const response = await axios.patch('http://localhost:4000/data/bulk', [
+          const response = await axios.patch(`${props.SERVER_URL}/data/bulk`, [
             { id, history: newHistory }
           ]);
           // Обновляем локальное состояние из ответа сервера
@@ -101,14 +101,14 @@ function List(props) {
                 {
                     props.data.map((element)=>{
                         if (element.status === 'waiting') {
-                            return <Unit deleteHistory={deleteHistory} setData={props.setData} deleteUnit={props.deleteUnit} info={element} selectUnit={props.selectUnit} id={element.id} name={element.name} key={element.id} isSelected={element.isSelected}/>
+                            return <Unit SERVER_URL={props.SERVER_URL} deleteHistory={deleteHistory} setData={props.setData} deleteUnit={props.deleteUnit} info={element} selectUnit={props.selectUnit} id={element.id} name={element.name} key={element.id} isSelected={element.isSelected}/>
                         }
                     })
                 }
                 </div>
                 <div className='columns__buttons'>
                     <button onClick={()=>setPopInfoIsOpen1(true)} disabled={!isDisabled('right','waiting')}><img src={arrow}></img></button>
-                    <InfoPopUp isOpen={popInfoIsOpen1} onClose={()=>{setPopInfoIsOpen1(false)}}>
+                    <InfoPopUp SERVER_URL={props.SERVER_URL} isOpen={popInfoIsOpen1} onClose={()=>{setPopInfoIsOpen1(false)}}>
                         <h3 style={{textAlign:'center', marginTop:'0'}}>Введите дату передачи на ремонт</h3>
                         {props.data.map((element)=>{
                             if (element.isSelected === true && element.status === 'waiting') {
@@ -134,7 +134,7 @@ function List(props) {
                 {
                     props.data.map((element)=>{
                         if (element.status === 'repair') {
-                            return <Unit deleteHistory={deleteHistory} setData={props.setData} deleteUnit={props.deleteUnit} info={element} selectUnit={props.selectUnit} id={element.id} name={element.name} key={element.id} isSelected={element.isSelected}/>
+                            return <Unit SERVER_URL={props.SERVER_URL} deleteHistory={deleteHistory} setData={props.setData} deleteUnit={props.deleteUnit} info={element} selectUnit={props.selectUnit} id={element.id} name={element.name} key={element.id} isSelected={element.isSelected}/>
                         }
                     })
                 }
@@ -142,7 +142,7 @@ function List(props) {
                 
                 <div className='columns__buttons'>
                     <button onClick={()=>setPopInfoIsOpen2(true)} disabled={!isDisabled('right','repair')}><img src={arrow}></img></button>
-                    <InfoPopUp isOpen={popInfoIsOpen2} onClose={()=>{setPopInfoIsOpen2(false)}}>
+                    <InfoPopUp SERVER_URL={props.SERVER_URL} isOpen={popInfoIsOpen2} onClose={()=>{setPopInfoIsOpen2(false)}}>
                         <h3 style={{textAlign:'center', marginTop:'0'}}>Введите дату получения с ремонта</h3>
                         {props.data.map((element)=>{
                             if (element.isSelected === true && element.status === 'repair') {
@@ -167,7 +167,7 @@ function List(props) {
                 {
                     props.data.map((element)=>{
                         if (element.status === 'complited') {
-                            return <Unit deleteHistory={deleteHistory} setData={props.setData} deleteUnit={props.deleteUnit} info={element} selectUnit={props.selectUnit} id={element.id} name={element.name} key={element.id} isSelected={element.isSelected}/>
+                            return <Unit SERVER_URL={props.SERVER_URL} deleteHistory={deleteHistory} setData={props.setData} deleteUnit={props.deleteUnit} info={element} selectUnit={props.selectUnit} id={element.id} name={element.name} key={element.id} isSelected={element.isSelected}/>
                         }
                     })
                 }

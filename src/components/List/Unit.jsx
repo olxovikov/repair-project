@@ -20,7 +20,7 @@ function Unit(props) {
     const handlePlaceChange = async (id, newPlaceValue) => {
         try {
             // Отправляем PATCH-запрос на сервер
-            const response = await axios.patch(`http://localhost:4000/data/${id}`, {
+            const response = await axios.patch(`${props.SERVER_URL}/data/${id}`, {
               place: newPlaceValue
               // Если позже добавите другие поля, просто передавайте их в объекте
             });
@@ -52,7 +52,7 @@ function Unit(props) {
             {props.isSelected ? (
                 
                     
-                    <InfoPopUp isOpen={popInfoIsOpen} onClose={async ()=>{await handlePlaceChange(props.info.id, place); setPopInfoIsOpen(false)}}>
+                    <InfoPopUp SERVER_URL={props.SERVER_URL} isOpen={popInfoIsOpen} onClose={async ()=>{await handlePlaceChange(props.info.id, place); setPopInfoIsOpen(false)}}>
                         <div className='popup-line'>
                             <label>id: </label>
                             <label>{props.info.id || '—'}</label>

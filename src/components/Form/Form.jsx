@@ -121,17 +121,17 @@ const submitForm = async (event) => {
         <div className='repair__form'>
             <h2>Добавить оборудование</h2>
             <form onSubmit={submitForm}>
-                <label><strong>Наименование</strong>
-                    <input type="text" value={name} name="name" onChange={(event) => {setName(event.target.value)}}/>
-                </label>
                 <label><strong>Инвентарный номер</strong>
-                    <input type="text" value={inv} name="inv" onChange={(event) => {setInv(event.target.value)}}/>
+                    <input placeholder='...' type="text" value={inv} name="inv" onChange={(event) => {setInv(event.target.value)}}/>
+                </label>
+                <label><strong>Наименование</strong>
+                    <input placeholder='...' type="text" value={name} name="name" onChange={(event) => {setName(event.target.value)}}/>
                 </label>
                 <label><strong>Неисправность</strong>
-                    <input type="text" value={defect} name="defect" onChange={(event) => {setDefect(event.target.value)}}/>
+                    <input placeholder='...' type="text" value={defect} name="defect" onChange={(event) => {setDefect(event.target.value)}}/>
                 </label>
                 <label><strong>Комментарий</strong>
-                    <input type="text" value={comment} name="comment" onChange={(event) => {setComment(event.target.value)}}/>
+                    <input placeholder='...' type="text" value={comment} name="comment" onChange={(event) => {setComment(event.target.value)}}/>
                 </label>
                 <button type="submit"><strong>Добавить</strong></button>
             </form>

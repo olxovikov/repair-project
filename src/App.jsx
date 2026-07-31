@@ -4,18 +4,22 @@ import axios from 'axios'
 import Form from './components/Form/Form'
 import List from './components/List/List'
 import Searcher from './components/Searcher/Searcher'
+import io from 'socket.io-client'
 
 function App() {
   
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const SERVER_URL = `http://${window.location.hostname}:4000`
 
   useEffect(()=>{
+    // 1. Первоначальная загрузка данных (через GET)
     const loadData = async () => {
       try {
         setLoading(true)
-        const res = await axios.get('http://localhost:4000/data')
+        // const res = await axios.get('http://localhost:4000/data')
+        const res = await axios.get(`${SERVER_URL}/data`)
         if (res.data) {
           setData(res.data)
         } 
@@ -28,7 +32,20 @@ function App() {
     }
   
     loadData()
-  }, [])
+
+     // 2. Подключение WebSocket и подписка на обновления
+    const socket = io(SERVER_URL);
+    
+    socket.on('dataUpdated', (newData) => {
+      setData(newData);        // обновляем состояние
+      setLoading(false);       // если были в загрузке
+    });
+
+    // 3. Очистка при размонтировании компонента
+    return () => {
+      socket.disconnect();     // отключаем сокет
+    };
+    }, [])
 
   // function selectUnit(id) {
 
@@ -50,7 +67,7 @@ function App() {
   
     try {
       // Отправляем PATCH на сервер
-      const response = await axios.patch(`http://localhost:4000/data/${id}`, {
+      const response = await axios.patch(`${SERVER_URL}/data/${id}`, {
         isSelected: newSelectedState
       });
       
@@ -114,7 +131,7 @@ function App() {
 
     // Отправляем массовый запрос на сервер
     try {
-      const response = await axios.patch('http://localhost:4000/data/bulk', updates);
+      const response = await axios.patch(`${SERVER_URL}/data/bulk`, updates);
       // Если сервер вернул обновлённый массив, можно синхронизироваться с ним
       setData(response.data);
     } catch (error) {
@@ -124,7 +141,7 @@ function App() {
 
   async function deleteUnit(id) {
     try {
-      const response = await axios.delete('http://localhost:4000/data', {
+      const response = await axios.delete(`${SERVER_URL}/data`, {
         data: { ids: [id] }
       })
       setData(response.data)
@@ -138,7 +155,7 @@ function App() {
     const selectedIds = data.filter(item=>item.isSelected).map(item=>item.id)
 
     try {
-      const response = await axios.delete('http://localhost:4000/data', {
+      const response = await axios.delete(`${SERVER_URL}/data`, {
         data: { ids: selectedIds }
       })
       setData(response.data)
@@ -158,11 +175,11 @@ function App() {
 
   return (
     <div className="app">
-      <Form data={data} setData={setData}/>
+      <Form SERVER_URL={SERVER_URL} data={data} setData={setData}/>
       {(data.length !== 0) ? (
       <>
         {/* <hr /> */}
-        <List deleteSelected={deleteSelected} deleteUnit={deleteUnit} changeStatus={changeStatus} data={data} setData={setData} selectUnit={selectUnit} />
+        <List SERVER_URL={SERVER_URL} deleteSelected={deleteSelected} deleteUnit={deleteUnit} changeStatus={changeStatus} data={data} setData={setData} selectUnit={selectUnit} />
         {/* <hr /> */}
         <Searcher data={data}/>
       </>
