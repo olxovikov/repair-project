@@ -35,15 +35,16 @@ function Searcher({data}) {
     const results = useMemo(() => filterData(data, searchTerm), [data, searchTerm]);
 
     return (
-<div style={{ padding: '20px' }}>
+<div className={'searcher'}style={{ padding: '20px' }}>
+      <h2 style={{marginTop:0}}>Поиск</h2>
       <input
         type="text"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         placeholder="Введите текст для поиска..."
-        style={{ width: '300px', padding: '8px', fontSize: '16px', textAlign: 'center' }}
+        style={{ width: '300px', padding: '8px', fontSize: '16px', textAlign: 'center', backgroundColor:'#f9f9f9', border: '1px solid #ddd', borderRadius: '6px'}}
       />
-      <div style={{ marginTop: '20px' }}>
+      <div style={{display:'flex', flexDirection: 'column', alignItems:'center', marginTop: '20px' }}>
         {results.length === 0 ? (
           <p>Ничего не найдено</p>
         ) : (

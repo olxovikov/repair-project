@@ -3,6 +3,8 @@ import '../PopUp/InfoPopUp'
 import InfoPopUp from '../PopUp/InfoPopUp'
 import { useState, useEffect} from 'react'
 import axios from 'axios'
+import info from '../../img/info.svg'
+import trash from '../../img/trash.svg'
 
 function Unit(props) {
 
@@ -41,9 +43,12 @@ function Unit(props) {
 
     return (
         <div onClick={()=>{return props.selectUnit(props.id)}} className={props.isSelected ? ('unitCard selectedUnit') : ('unitCard')}>
+            <button disabled={!props.isSelected} style={!props.isSelected ? {visibility:'hidden', width: 'auto', height: 'auto', marginTop: '0px', padding: '0px'} : {left:'3px', width: 'auto', height: 'auto', marginTop: '0px', padding: '0px'} } 
+                    onClick={(event)=>{event.stopPropagation(); return props.deleteUnit(props.id)}}><img src={trash}/></button>
             <label onClick={()=>{return props.selectUnit(props.id)}} className={props.isSelected ? ('selectedUnit') : (null)}>{props.name}</label>
-            <button disabled={!props.isSelected} style={!props.isSelected ? {visibility:'hidden', width: 'auto', height: 'auto', marginTop: '0px', padding: '0px'} : {width: 'auto', height: 'auto', marginTop: '0px', padding: '0px'} } 
-                    onClick={(event)=>{event.stopPropagation(); setPopInfoIsOpen(true)}}>info</button>
+            <button disabled={!props.isSelected} style={!props.isSelected ? {visibility:'hidden', width: 'auto', height: 'auto', marginTop: '0px', padding: '0px'} : {right:'3px', width: 'auto', height: 'auto', marginTop: '0px', padding: '0px'} } 
+                    onClick={(event)=>{event.stopPropagation(); setPopInfoIsOpen(true)}}><img src={info}/></button>
+            
             {props.isSelected ? (
                 
                     

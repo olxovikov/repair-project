@@ -90,11 +90,12 @@ function List(props) {
       };
 
     return (
-        <>
+        <div className='list__main'>
             <h2>
-                Список
+                    Список
             </h2>
             <div className="list">
+                
                 <div className='columns'>
                     <h3>Нужен ремонт</h3>
                 {
@@ -181,7 +182,7 @@ function List(props) {
                 </button>
             </div>
             
-        </>
+        </div>
     )
 }
 

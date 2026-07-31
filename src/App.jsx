@@ -161,9 +161,9 @@ function App() {
       <Form data={data} setData={setData}/>
       {(data.length !== 0) ? (
       <>
-        <hr />
+        {/* <hr /> */}
         <List deleteSelected={deleteSelected} deleteUnit={deleteUnit} changeStatus={changeStatus} data={data} setData={setData} selectUnit={selectUnit} />
-        <hr />
+        {/* <hr /> */}
         <Searcher data={data}/>
       </>
       ) : (null)}

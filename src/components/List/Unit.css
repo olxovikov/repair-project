@@ -1,11 +1,21 @@
 .selectedUnit {
-    background-color: greenyellow;
+    /* background-color: #ddd; */
+    background-color: white;
 }
 
 .unitCard {
+    position: relative;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
+}
+
+.unitCard button {
+    position: absolute;
+}
+
+.unitCard img {
+    height: 15px;
 }
 
 .popup-line {

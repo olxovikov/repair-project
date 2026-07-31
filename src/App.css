@@ -1,6 +1,15 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  /* padding: 2rem; */
   text-align: center;
+  /* background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 6px; */
+}
+
+body {
+  background-color: #f9f9f9;
 }

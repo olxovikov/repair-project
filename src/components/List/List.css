@@ -4,9 +4,17 @@
     gap: 10px;
 } */
 
+.list__main {
+    margin-top: 25px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
 .list {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 3fr 1fr 3fr 1fr 3fr;
+    padding: 2rem;
 }
 
 .list button {
@@ -28,7 +36,10 @@
 .columns {
     display: flex;
     flex-direction: column;
-
+    padding-bottom: 18.720px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: rgba(249, 249, 249, 1);
 }
 
 .columns__buttons {
@@ -37,12 +48,20 @@
     justify-content: center;
 }
 
+.columns__buttons button {
+    margin-top: 0px;
+}
+
 .actions {
     margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .actions button {
     margin: 5px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    background-color: #f9f9f9;
 }
 
 .actions button:disabled {
