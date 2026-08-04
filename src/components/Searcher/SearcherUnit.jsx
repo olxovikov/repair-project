@@ -12,6 +12,7 @@ function SearcherUnit ({item}) {
       if (key === 'comment') {return 'Комментарий'}
       if (key === 'status') {return 'Статус'}
       if (key === 'place') {return 'Местоположение'}
+      if (key ==='history') {return 'История'}
       else {return key}
     }
 

@@ -91,6 +91,10 @@ const submitForm = async (event) => {
         try {
             const response = await axios.post('http://localhost:4000/data', newUnit)
             props.setData(response.data)
+            setName('')
+            setInv('')
+            setDefect('')
+            setComment('')
         } catch (error) {
             console.log('Ошибка при добавлении:', error)
         }
@@ -103,18 +107,21 @@ const submitForm = async (event) => {
             let userResponse;
             userResponse = confirm(`В списке уже числится оборудование с указанным инвентарным номером. Введенные значения будут учтены, старые данные перейдут в историю.\nПродолжить?`)
             userResponse ? 
-            props.data.forEach(element => {
-                 if (element.inv === event.target.inv.value) {
-                    changeHistory(event.target.inv.value)
-                 }
-            })
+            (()=>{
+                props.data.forEach(element => {
+                    if (element.inv === event.target.inv.value) {
+                       changeHistory(event.target.inv.value)
+                    }
+               })
+               setName('');
+               setInv('');
+               setDefect('');
+               setComment('');
+            })()
             : null
         }
 
-        setName('')
-        setInv('')
-        setDefect('')
-        setComment('')
+        
     }
     
     return (

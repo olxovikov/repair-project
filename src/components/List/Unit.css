@@ -19,6 +19,65 @@
 }
 
 .popup-line {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    font-size: large;
+}
+
+.popup-line label {
+    text-align: center;    
+    /* border: 1px solid #ddd; */
+    border: 1px solid white;
+    background-color: #f9f9f9;
+}
+
+.popup-line input {
+    width: auto;
+    text-align: center;
+    /* border: 1px solid #ddd; */
+    border: 1px solid white;
+    background-color: #f9f9f9;
+    font-size: 17px;
+}
+
+#trash img:hover {
+    filter:
+    invert(14%) 
+    sepia(100%) 
+    saturate(7000%) 
+    hue-rotate(0deg);
+}
+
+.popup-line a {
+    text-align: center;
+    /* border: 1px solid #ddd; */
+    border: 1px solid white;
+    background-color: #f9f9f9;
+    font-size: large;
+    font-weight: 400;
+}
+
+.history-line {
+    position: relative;
+    font-size: large;
+    border: 1px solid white;
+    background-color: #f9f9f9;
+}
+
+.history-line img:hover {
+    filter:
+    invert(14%) 
+    sepia(100%) 
+    saturate(7000%) 
+    hue-rotate(0deg);
+}
+
+#info img:hover {
+    filter: 
+    brightness(0)        
+    saturate(100%)       
+    invert(1)            
+    sepia(1)             
+    saturate(10000%)     
+    hue-rotate(-30deg);  
 }

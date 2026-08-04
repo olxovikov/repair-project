@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import './InfoPopUp.css'
+import close from '../../img/close.svg'
 
 function InfoPopUp({isOpen, onClose, children}) {
     useEffect(()=>{
@@ -21,9 +22,9 @@ function InfoPopUp({isOpen, onClose, children}) {
         <div className="modal" onClick={(event)=>event.stopPropagation()}>
             <div className="modal-wrapper" onClick={onWrapperClick}>
                 <div className="modal-content">
-                    <label className="modal-close-button" onClick={()=> onClose()}>
-                        X
-                    </label>
+                    <button title="Закрыть" style={{width: '30px', height:'30px'}} className="modal-close-button" onClick={()=> onClose()}>
+                        <img src={close}/>
+                    </button>
                     {children}
                 </div>
             </div>
