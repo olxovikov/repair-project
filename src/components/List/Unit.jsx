@@ -11,12 +11,18 @@ function Unit(props) {
 
     const [popInfoIsOpen, setPopInfoIsOpen] = useState(false)
     const [place, setPlace] = useState(props.info.place ?? '')
+    const [comment, setComment] = useState(props.info.comment ?? '')
+    const [defect, setDefect] = useState(props.info.defect ?? '')
+    const [name, setName] = useState(props.info.name ?? '')
     const [historyIsOpen, setHistoryIsOpen] = useState(false)
 
     // Синхронизация при изменении выбранного элемента
     useEffect(() => {
         setPlace(props.info.place ?? '');
-    }, [props.info.place]);
+        setComment(props.info.comment ?? '');
+        setDefect(props.info.defect ?? '');
+        setName(props.info.name ?? '');
+    }, [props.info.place, props.info.comment, props.info.defect, props.info.name]);
 
     const handlePlaceChange = async (id, newPlaceValue) => {
         try {
@@ -29,11 +35,53 @@ function Unit(props) {
             // После успешного ответа обновляем локальное состояние данными с сервера
             props.setData(response.data);
           } catch (error) {
-            console.error('Ошибка при обновлении place:', error);
+            console.error('Ошибка при обновлении Place:', error);
             // Можно показать уведомление пользователю
             // Опционально: откатить локальное состояние, если нужно
           }
       };
+
+      const handleCommentChange = async (id, newCommentValue) => {
+        try {
+            // Отправляем PATCH-запрос на сервер
+            const response = await axios.patch(`${props.SERVER_URL}/data/${id}`, {
+              comment: newCommentValue
+            });
+            
+            // После успешного ответа обновляем локальное состояние данными с сервера
+            props.setData(response.data);
+          } catch (error) {
+            console.error('Ошибка при обновлении Comment:', error);
+          }
+      };
+
+      const handleDefectChange = async (id, newDefectValue) => {
+        try {
+            // Отправляем PATCH-запрос на сервер
+            const response = await axios.patch(`${props.SERVER_URL}/data/${id}`, {
+              defect: newDefectValue
+            });
+            
+            // После успешного ответа обновляем локальное состояние данными с сервера
+            props.setData(response.data);
+          } catch (error) {
+            console.error('Ошибка при обновлении Defect:', error);
+          }
+      };
+
+      const handleNameChange = async (id, newNameValue) => {
+        try {
+            // Отправляем PATCH-запрос на сервер
+            const response = await axios.patch(`${props.SERVER_URL}/data/${id}`, {
+              name: newNameValue
+            });
+            
+            // После успешного ответа обновляем локальное состояние данными с сервера
+            props.setData(response.data);
+          } catch (error) {
+            console.error('Ошибка при обновлении Name:', error);
+          }
+      };      
 
       function getStatus(status) {
         if (status === 'waiting') {return 'Нужен ремонт'}
@@ -53,7 +101,7 @@ function Unit(props) {
             {props.isSelected ? (
                 
                     
-                    <InfoPopUp SERVER_URL={props.SERVER_URL} isOpen={popInfoIsOpen} onClose={async ()=>{await handlePlaceChange(props.info.id, place); setPopInfoIsOpen(false)}}>
+                    <InfoPopUp SERVER_URL={props.SERVER_URL} isOpen={popInfoIsOpen} onClose={async ()=>{await handlePlaceChange(props.info.id, place); await handleCommentChange(props.info.id, comment); await handleDefectChange(props.info.id, defect); await handleNameChange(props.info.id, name); setPopInfoIsOpen(false)}}>
                         {/* <div className='popup-line'>
                             <strong>id: </strong>
                             <label>{props.info.id || '—'}</label>
@@ -63,7 +111,14 @@ function Unit(props) {
                         <h3 style={{textAlign:'center', marginTop: '10px', marginBottom:'10px'}}>Основная информация</h3>
                         <div className="popup-line">
                             <label>Наименование</label>
-                            <label>{props.info.name || '—'}</label>
+                            {/* <label>{props.info.name || '—'}</label> */}
+                            <input
+                                placeholder='Укажите наименование...' 
+                                type='text' 
+                                value={name}
+                                onChange={(e)=>{setName(e.target.value)}}
+                            >
+                            </input>                            
                         </div>
                         <div className="popup-line">
                             <label>Инвентарный номер</label>
@@ -73,7 +128,14 @@ function Unit(props) {
                         <h3 style={{textAlign:'center', marginTop: '10px', marginBottom:'10px'}}>Проблема и даты</h3>
                         <div className="popup-line">
                             <label>Неисправность</label>
-                            <label>{props.info.defect || '—'}</label>
+                            {/* <label>{props.info.defect || '—'}</label> */}
+                            <input
+                                placeholder='Укажите неисправность...' 
+                                type='text' 
+                                value={defect}
+                                onChange={(e)=>{setDefect(e.target.value)}}
+                            >
+                            </input>
                         </div>
                         <div className="popup-line">
                             <label>Дата передачи на ремонт</label>
@@ -86,7 +148,14 @@ function Unit(props) {
                         <h3 style={{textAlign:'center', marginTop: '10px', marginBottom:'10px'}}>Статус и комментарий</h3>
                         <div className="popup-line">
                             <label>Комментарий</label>
-                            <label>{props.info.comment || '—'}</label>
+                            {/* <label>{props.info.comment || '—'}</label> */}
+                            <input
+                                placeholder='Добавьте комментарий...' 
+                                type='text' 
+                                value={comment}
+                                onChange={(e)=>{setComment(e.target.value)}}
+                            >
+                            </input>
                         </div>
                         <div className="popup-line">
                             <label>Статус</label>

@@ -131,7 +131,10 @@ function App() {
 
     // Отправляем массовый запрос на сервер
     try {
-      const response = await axios.patch(`${SERVER_URL}/data/bulk`, updates);
+      const response = await axios.patch(`${SERVER_URL}/data/bulk`, {
+        updates: updates,
+        reorder: true
+      });
       // Если сервер вернул обновлённый массив, можно синхронизироваться с ним
       setData(response.data);
     } catch (error) {
