@@ -1,4 +1,5 @@
 import Unit from './Unit'
+import Column from './Column'
 import './List.css'
 import arrow from '../../img/arrow.svg'
 import trash from '../../img/trash.svg'
@@ -7,18 +8,6 @@ import InfoPopUp from '../PopUp/InfoPopUp';
 import axios from 'axios'
 
 function List(props) {
-
-    // function isDisabled(status) {
-    //     let selectedCounter;
-    //     if (status) {
-    //         selectedCounter = props.data.filter((element)=>(element.isSelected && element.status === status)).length
-    //     }
-    //     else {
-    //         selectedCounter = props.data.filter((element)=>element.isSelected).length;
-    //     }
-
-    //     return (selectedCounter > 0)
-    // }
 
     function isDisabled(direction, status) {
 
@@ -59,15 +48,6 @@ function List(props) {
         }
       };
 
-    // function deleteHistory(id, index) {
-    //     let result = props.data.map(element => {
-    //         if (element.id === id) {
-    //             return {...element, history: element.history.filter((element, idx)=>idx!=index)}
-    //         } else {return {...element}}
-    //     })
-    //     props.setData(result)
-    // }
-
     const deleteHistory = async (id, index) => {
         // Находим элемент, чтобы получить текущий массив истории
         const target = props.data.find(el => el.id === id);
@@ -95,20 +75,10 @@ function List(props) {
                     Список
             </h2>
             <div className="list">
-                
-                <div className='columns'>
-                    <h3>Нужен ремонт</h3>
-                {
-                    props.data.map((element)=>{
-                        if (element.status === 'waiting') {
-                            return <Unit SERVER_URL={props.SERVER_URL} deleteHistory={deleteHistory} setData={props.setData} deleteUnit={props.deleteUnit} info={element} selectUnit={props.selectUnit} id={element.id} name={element.name} key={element.id} isSelected={element.isSelected}/>
-                        }
-                    })
-                }
-                </div>
+                <Column title={'Нужен ремонт'} status={'waiting'} data={props.data} SERVER_URL={props.SERVER_URL} deleteHistory={deleteHistory} setData={props.setData} deleteUnit={props.deleteUnit} selectUnit={props.selectUnit} />
                 <div className='columns__buttons'>
                     <button title="Переместить" onClick={()=>setPopInfoIsOpen1(true)} disabled={!isDisabled('right','waiting')}><img src={arrow}></img></button>
-                    <InfoPopUp SERVER_URL={props.SERVER_URL} isOpen={popInfoIsOpen1} onClose={()=>{setPopInfoIsOpen1(false)}}>
+                    <InfoPopUp isOpen={popInfoIsOpen1} onClose={()=>{setPopInfoIsOpen1(false)}}>
                         <h3 style={{margin:'0'}}>Передача на ремонт</h3>
                         <div style={{marginTop:'10px'}} className='popup-line'>
                             <label><b>Наименование</b></label>
@@ -134,21 +104,11 @@ function List(props) {
                         <button style={{marginLeft:'25%', marginTop:'10px', height: 'auto', width: '50%', backgroundColor: '#f9f9f9', border: '1px solid #ddd'}} onClick={()=>{setPopInfoIsOpen1(false); props.changeStatus('waiting')}}>Сохранить</button>
                     </InfoPopUp>
                 </div>
-
-                <div className='columns'>
-                    <h3>В ремонте</h3>
-                {
-                    props.data.map((element)=>{
-                        if (element.status === 'repair') {
-                            return <Unit SERVER_URL={props.SERVER_URL} deleteHistory={deleteHistory} setData={props.setData} deleteUnit={props.deleteUnit} info={element} selectUnit={props.selectUnit} id={element.id} name={element.name} key={element.id} isSelected={element.isSelected}/>
-                        }
-                    })
-                }
-                </div>
+                <Column title={'В ремонте'} status={'repair'} data={props.data} SERVER_URL={props.SERVER_URL} deleteHistory={deleteHistory} setData={props.setData} deleteUnit={props.deleteUnit} selectUnit={props.selectUnit} />
                 
                 <div className='columns__buttons'>
                     <button title="Переместить" onClick={()=>setPopInfoIsOpen2(true)} disabled={!isDisabled('right','repair')}><img src={arrow}></img></button>
-                    <InfoPopUp SERVER_URL={props.SERVER_URL} isOpen={popInfoIsOpen2} onClose={()=>{setPopInfoIsOpen2(false)}}>
+                    <InfoPopUp isOpen={popInfoIsOpen2} onClose={()=>{setPopInfoIsOpen2(false)}}>
                         <h3 style={{textAlign:'center', margin:'0'}}>Получение с ремонта</h3>
                         <div style={{marginTop:'10px'}} className='popup-line'>
                             <label><b>Наименование</b></label>
@@ -174,16 +134,7 @@ function List(props) {
                         <button style={{marginLeft:'25%', marginTop:'10px', height: 'auto', width: '50%', backgroundColor: '#f9f9f9', border: '1px solid #ddd'}} onClick={()=>{setPopInfoIsOpen2(false);props.changeStatus('repair')}}>Сохранить</button>
                     </InfoPopUp>
                 </div> 
-                <div className='columns'>
-                    <h3>Отработано</h3>
-                {
-                    props.data.map((element)=>{
-                        if (element.status === 'complited') {
-                            return <Unit SERVER_URL={props.SERVER_URL} deleteHistory={deleteHistory} setData={props.setData} deleteUnit={props.deleteUnit} info={element} selectUnit={props.selectUnit} id={element.id} name={element.name} key={element.id} isSelected={element.isSelected}/>
-                        }
-                    })
-                }
-                </div>
+                <Column title={'Отработано'} status={'complited'} data={props.data} SERVER_URL={props.SERVER_URL} deleteHistory={deleteHistory} setData={props.setData} deleteUnit={props.deleteUnit} selectUnit={props.selectUnit} />
             </div>
             <div className='actions'>
                 <button title='Удалить' style={{padding: '15px'}} onClick={()=>props.deleteSelected()} disabled={!isDisabled()}>

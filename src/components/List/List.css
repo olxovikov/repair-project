@@ -32,14 +32,14 @@
     width: 100%;
 }
 
-.columns {
+/* .columns {
     display: flex;
     flex-direction: column;
     padding-bottom: 18.720px;
     border: 1px solid #ddd;
     border-radius: 6px;
     background-color: rgba(249, 249, 249, 1);
-}
+} */
 
 .columns__buttons {
     display: flex;
