@@ -1,4 +1,3 @@
-import Unit from './Unit'
 import Column from './Column'
 import './List.css'
 import arrow from '../../img/arrow.svg'
@@ -48,34 +47,13 @@ function List(props) {
         }
       };
 
-    const deleteHistory = async (id, index) => {
-        // Находим элемент, чтобы получить текущий массив истории
-        const target = props.data.find(el => el.id === id);
-        if (!target) return;
-      
-        // Формируем новый массив истории без указанного индекса
-        const newHistory = target.history.filter((_, idx) => idx !== index);
-      
-        try {
-          // Отправляем PATCH-запрос с обновлённым полем history
-          const response = await axios.patch(`${props.SERVER_URL}/data/bulk`, [
-            { id, history: newHistory }
-          ]);
-          // Обновляем локальное состояние из ответа сервера
-          props.setData(response.data);
-        } catch (error) {
-          console.error('Ошибка при удалении записи истории:', error);
-          alert('Не удалось удалить запись. Попробуйте позже.');
-        }
-      };
-
     return (
         <div className='list__main'>
             <h2>
                     Список
             </h2>
             <div className="list">
-                <Column title={'Нужен ремонт'} status={'waiting'} data={props.data} SERVER_URL={props.SERVER_URL} deleteHistory={deleteHistory} setData={props.setData} deleteUnit={props.deleteUnit} selectUnit={props.selectUnit} />
+                <Column title={'Нужен ремонт'} status={'waiting'} data={props.data} SERVER_URL={props.SERVER_URL} deleteHistory={props.deleteHistory} setData={props.setData} deleteUnit={props.deleteUnit} selectUnit={props.selectUnit} />
                 <div className='columns__buttons'>
                     <button title="Переместить" onClick={()=>setPopInfoIsOpen1(true)} disabled={!isDisabled('right','waiting')}><img src={arrow}></img></button>
                     <InfoPopUp isOpen={popInfoIsOpen1} onClose={()=>{setPopInfoIsOpen1(false)}}>
@@ -104,7 +82,7 @@ function List(props) {
                         <button style={{marginLeft:'25%', marginTop:'10px', height: 'auto', width: '50%', backgroundColor: '#f9f9f9', border: '1px solid #ddd'}} onClick={()=>{setPopInfoIsOpen1(false); props.changeStatus('waiting')}}>Сохранить</button>
                     </InfoPopUp>
                 </div>
-                <Column title={'В ремонте'} status={'repair'} data={props.data} SERVER_URL={props.SERVER_URL} deleteHistory={deleteHistory} setData={props.setData} deleteUnit={props.deleteUnit} selectUnit={props.selectUnit} />
+                <Column title={'В ремонте'} status={'repair'} data={props.data} SERVER_URL={props.SERVER_URL} deleteHistory={props.deleteHistory} setData={props.setData} deleteUnit={props.deleteUnit} selectUnit={props.selectUnit} />
                 
                 <div className='columns__buttons'>
                     <button title="Переместить" onClick={()=>setPopInfoIsOpen2(true)} disabled={!isDisabled('right','repair')}><img src={arrow}></img></button>
@@ -134,7 +112,7 @@ function List(props) {
                         <button style={{marginLeft:'25%', marginTop:'10px', height: 'auto', width: '50%', backgroundColor: '#f9f9f9', border: '1px solid #ddd'}} onClick={()=>{setPopInfoIsOpen2(false);props.changeStatus('repair')}}>Сохранить</button>
                     </InfoPopUp>
                 </div> 
-                <Column title={'Отработано'} status={'complited'} data={props.data} SERVER_URL={props.SERVER_URL} deleteHistory={deleteHistory} setData={props.setData} deleteUnit={props.deleteUnit} selectUnit={props.selectUnit} />
+                <Column title={'Отработано'} status={'complited'} data={props.data} SERVER_URL={props.SERVER_URL} deleteHistory={props.deleteHistory} setData={props.setData} deleteUnit={props.deleteUnit} selectUnit={props.selectUnit} />
             </div>
             <div className='actions'>
                 <button title='Удалить' style={{padding: '15px'}} onClick={()=>props.deleteSelected()} disabled={!isDisabled()}>

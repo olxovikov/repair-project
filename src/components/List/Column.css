@@ -9,10 +9,11 @@
 
 .columns-container {
     overflow: hidden;
-    transition: max-height 0.4s ease-in-out;
+    /* transition: max-height 0.4s ease-in-out; */
 }
 
 .columns-container.scrollable {
+    max-height: 240px;
     overflow-y: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;

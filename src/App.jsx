@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Form from './components/Form/Form'
 import List from './components/List/List'
-import Searcher from './components/Searcher/Searcher'
 import io from 'socket.io-client'
+import Finder from './components/Finder/Finder'
 
 function App() {
   
@@ -47,17 +47,6 @@ function App() {
     };
     }, [])
 
-  // function selectUnit(id) {
-
-  //   let result = data.map((element)=>{
-  //     if (element.id === id && element.isSelected === false) {return {...element, isSelected: true}}
-  //     else if (element.id === id && element.isSelected === true) {return {...element, isSelected: false}}
-  //     else {return {...element}}
-  //   })
-
-  //   setData(result)
-  // }
-
   async function selectUnit(id) {
     // Находим текущий элемент, чтобы узнать новое значение isSelected
     const currentItem = data.find(el => el.id === id);
@@ -78,18 +67,6 @@ function App() {
       // Можно показать уведомление пользователю
     }
   }
-
-  // function changeStatus(status) {
-  //   let result = data.map((element)=>{
-  //     if (element.isSelected === true && element.status === 'waiting' && status === 'waiting') {return {...element, status: 'repair', isSelected: false, place: 'В ремонте'}}
-  //     else if (element.isSelected === true && element.status === 'repair' && status === 'repair') {return {...element, status: 'complited', isSelected: false, place: ''}}
-  //     else if (element.isSelected === true && element.status === 'complited' && status === 'back') {return {...element, status: 'repair', isSelected: false, place: 'В ремонте'}}
-  //     else if (element.isSelected === true && element.status === 'repair' && status === 'back') {return {...element, status: 'waiting', isSelected: false, place: ''}}
-  //     else {return {...element}}
-  //   })
-
-  //   setData(result)
-  // }
 
   async function changeStatus(action) { // action = 'waiting' | 'repair' | 'back'
     // Определяем, какие элементы нужно изменить и какие у них новые поля
@@ -154,6 +131,27 @@ function App() {
     
   }
 
+  const deleteHistory = async (id, index) => {
+    // Находим элемент, чтобы получить текущий массив истории
+    const target = data.find(el => el.id === id);
+    if (!target) return;
+  
+    // Формируем новый массив истории без указанного индекса
+    const newHistory = target.history.filter((_, idx) => idx !== index);
+  
+    try {
+      // Отправляем PATCH-запрос с обновлённым полем history
+      const response = await axios.patch(`${SERVER_URL}/data/bulk`, [
+        { id, history: newHistory }
+      ]);
+      // Обновляем локальное состояние из ответа сервера
+      setData(response.data);
+    } catch (error) {
+      console.error('Ошибка при удалении записи истории:', error);
+      alert('Не удалось удалить запись. Попробуйте позже.');
+    }
+  };
+
   async function deleteSelected() {
     const selectedIds = data.filter(item=>item.isSelected).map(item=>item.id)
 
@@ -181,10 +179,8 @@ function App() {
       <Form SERVER_URL={SERVER_URL} data={data} setData={setData}/>
       {(data.length !== 0) ? (
       <>
-        {/* <hr /> */}
-        <List SERVER_URL={SERVER_URL} deleteSelected={deleteSelected} deleteUnit={deleteUnit} changeStatus={changeStatus} data={data} setData={setData} selectUnit={selectUnit} />
-        {/* <hr /> */}
-        <Searcher data={data}/>
+        <List deleteHistory={deleteHistory} SERVER_URL={SERVER_URL} deleteSelected={deleteSelected} deleteUnit={deleteUnit} changeStatus={changeStatus} data={data} setData={setData} selectUnit={selectUnit} />
+        <Finder data={data} setData={setData} deleteHistory={deleteHistory} SERVER_URL={SERVER_URL}/>
       </>
       ) : (null)}
     </div>

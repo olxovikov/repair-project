@@ -5,6 +5,7 @@
     background-color: white;
     border: 1px solid #ddd;
     border-radius: 6px;
+    padding: 50px;
 }
 
 .repair__form form {

@@ -17,24 +17,6 @@ const submitForm = async (event) => {
         
         event.preventDefault()
 
-        // function changeHistory(newInv) {
-       
-        //     let result = props.data.map(element => {
-        //         if (element.inv === newInv) return {...element, 
-        //             history: [...element.history, `Дата передачи на ремонт: ${element.date1}\nДата получения с ремонта: ${element.date2}\nНеисправность: ${element.defect}`], 
-        //             defect: event.target.defect.value,
-        //             date1: null,
-        //             date2: null,
-        //             comment: event.target.comment.value,
-        //             status: 'waiting',
-        //             place: null,
-        //         }
-        //         else return {...element}
-        //     })
-            
-        //     props.setData(result)
-        // }
-
         const changeHistory = async (newInv) => {
             // Находим элемент, который будем обновлять
             const targetElement = props.data.find(el => el.inv === newInv);
@@ -68,7 +50,7 @@ const submitForm = async (event) => {
 
         let counter = false;
         props.data.forEach(element => {
-            if (element.inv === event.target.inv.value) {counter=true}
+            if ((element.inv === event.target.inv.value)&&(event.target.inv.value)&&(element.inv !== '-')) {counter=true}
         });
 
         if (counter === false) {
@@ -128,11 +110,11 @@ const submitForm = async (event) => {
         <div className='repair__form'>
             <h2>Добавить оборудование</h2>
             <form onSubmit={submitForm}>
-                <label><strong>Инвентарный номер</strong>
-                    <input placeholder='...' type="text" value={inv} name="inv" onChange={(event) => {setInv(event.target.value)}}/>
-                </label>
                 <label><strong>Наименование</strong>
                     <input placeholder='...' type="text" value={name} name="name" onChange={(event) => {setName(event.target.value)}}/>
+                </label>
+                <label><strong>Инвентарный номер</strong>
+                    <input placeholder='...' type="text" value={inv} name="inv" onChange={(event) => {setInv(event.target.value)}}/>
                 </label>
                 <label><strong>Неисправность</strong>
                     <input placeholder='...' type="text" value={defect} name="defect" onChange={(event) => {setDefect(event.target.value)}}/>
