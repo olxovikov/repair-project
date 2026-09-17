@@ -2,8 +2,8 @@ import React from 'react'
 import './Pagination.css'
 import range from 'lodash.range'
 
-function Pagination({totalPage, page, limit, siblings, handlePageChange}) {
-    const getPaginationRange = (totalPage, page, limit, siblings) => {
+function Pagination({totalPage, page, setPage, siblings, handlePageChange, format}) {
+    const getPaginationRange = (totalPage, page, siblings) => {
         let totalPageNoInArray = 7 + siblings;
         if (totalPageNoInArray >= totalPage) {
             return range(1, totalPage + 1)
@@ -32,18 +32,30 @@ function Pagination({totalPage, page, limit, siblings, handlePageChange}) {
         }
     }
 
-    let array = getPaginationRange(totalPage, page, limit, siblings)
+    let array = [page]
+
+    if (format !== 'mini') {
+        array = getPaginationRange(totalPage, page, siblings)
+    }
 
     return (
         <ul className="pagination">
-            <li className={(page === 1) ? "page-item disabled" : "page-item"}><span className="page-link" onClick={()=>handlePageChange("&laquo;")}>&laquo;</span></li>
-            <li className={(page === 1) ? "page-item disabled" : "page-item"}><span className="page-link" onClick={()=>handlePageChange("&lsaquo;")}>&lsaquo;</span></li>
+            {
+                format !== 'mini' && 
+                <li className={(page === 1) ? "page-item disabled" : "page-item"}><span className="page-link" onClick={()=>handlePageChange("&laquo;", setPage, page, totalPage)}>&laquo;</span></li>
+            }
+            
+            <li className={(page === 1) ? "page-item disabled" : "page-item"}><span className="page-link" onClick={()=>handlePageChange("&lsaquo;", setPage, page, totalPage)}>&lsaquo;</span></li>
             {array.map(element=>{
-                return <li key={element} className={(element===page) ? "page-item active" : "page-item"}><span className="page-link" onClick={()=>handlePageChange(element)}>{element}</span></li>
+                return <li key={element} className={(element===page & format !== 'mini') ? "page-item active" : "page-item"}><span className="page-link" onClick={()=>handlePageChange(element, setPage, page, totalPage)}>{element}</span></li>
                 
             })}
-            <li className={(page === totalPage) ? "page-item disabled" : "page-item"}><span className="page-link" onClick={()=>handlePageChange("&rsaquo;")}>&rsaquo;</span></li>
-            <li className={(page === totalPage) ? "page-item disabled" : "page-item"}><span className="page-link" onClick={()=>handlePageChange("&raquo;")}>&raquo;</span></li>
+            <li className={(page === totalPage) ? "page-item disabled" : "page-item"}><span className="page-link" onClick={()=>handlePageChange("&rsaquo;", setPage, page, totalPage)}>&rsaquo;</span></li>
+            {
+                format !== 'mini' &&
+                <li className={(page === totalPage) ? "page-item disabled" : "page-item"}><span className="page-link" onClick={()=>handlePageChange("&raquo;", setPage, page, totalPage)}>&raquo;</span></li>
+            }
+            
         </ul>
     )
 }

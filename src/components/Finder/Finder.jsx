@@ -2,6 +2,7 @@ import './Finder.css'
 import Unit from '../Unit/Unit'
 import { useState, useMemo } from 'react'
 import Pagination from '../Pagination/Pagination';
+import { getVisibleItems, handlePageChange } from '../../controllers/pagination';
 
 function Finder({data, setData, deleteHistory, SERVER_URL}) {
     const [finderInput, setFinderInput] = useState('')
@@ -37,34 +38,6 @@ function Finder({data, setData, deleteHistory, SERVER_URL}) {
 
     let totalPage = Math.ceil(filteredData.length/limit)
 
-    const getVisibleItems = (page, limit) => {
-        let array = []
-        for (let i = (page-1)*limit; i < (page*limit) && filteredData[i]; i++) {
-            array.push(filteredData[i])
-        }
-        return array;
-    }
-
-    const handlePageChange = (value) => {
-        if (value === "&laquo;") {
-            setPage(1);
-        } else if (value === "&lsaquo;") {
-            if (page !== 1) {
-                setPage(page - 1)
-            }
-        } else if (value === "&rsaquo;") {
-            if (page !== totalPage) {
-                setPage(page + 1)
-            }
-        } else if (value === "&raquo;") {
-            setPage(totalPage)
-        } else {
-            if (value !== " ..." && value !== "... ") {
-                setPage(value)
-            }
-        }
-    }
-
     return (
         <div className='finder'>
             <h2 style={{marginTop:0}}>Поиск</h2>
@@ -83,17 +56,17 @@ function Finder({data, setData, deleteHistory, SERVER_URL}) {
             <div style={{display:'flex', flexDirection: 'column', alignItems:'center', marginTop: '20px' }}>
             
             {filteredData.length ? 
-                <Pagination totalPage={totalPage} page={page} limit={limit} siblings={1} handlePageChange={handlePageChange}/>
+                <Pagination totalPage={totalPage} page={page} setPage={setPage} limit={limit} siblings={1} handlePageChange={handlePageChange}/>
             : null}
 
-            {getVisibleItems(page, limit).map(element => {
+            {getVisibleItems(page, limit, filteredData).map(element => {
                                 return (
                                     <Unit key={element.id} info={element} deleteHistory={deleteHistory} SERVER_URL={SERVER_URL} setData={setData} popUpIsNeeded={false}/>
                                 )
                             })}
 
-            {(getVisibleItems(page, limit).length > 1) ? 
-                <Pagination totalPage={totalPage} page={page} limit={limit} siblings={1} handlePageChange={handlePageChange}/>
+            {(getVisibleItems(page, limit, filteredData).length > 1) ? 
+                <Pagination totalPage={totalPage} page={page} setPage={setPage} limit={limit} siblings={1} handlePageChange={handlePageChange}/>
             : null}
 
             {finderInput.trim() && filteredData.length === 0 && (
