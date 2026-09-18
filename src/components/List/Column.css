@@ -11,12 +11,16 @@
 .columns-container {
     overflow: hidden;
     width: 100%;
+    transition: max-height 0.3s ease;
+    max-width: 223px;
+    /* max-height задаётся inline из компонента */
 }
 
 .columns-container.scrollable {
-    max-height: 240px;
     overflow-y: auto;
+    overflow-x: hidden;
     margin-left: 10px;
+    /* max-height задаётся inline из компонента */
 }
 
 .columns-container.scrollable::-webkit-scrollbar {
